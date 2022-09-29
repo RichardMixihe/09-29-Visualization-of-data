@@ -216,7 +216,8 @@ function mapChart() {
             type:'map',
             map:'china',
             itemStyle:{
-                areaColor:'blue'
+                areaColor:'blue',
+                
             }
         }]
     }

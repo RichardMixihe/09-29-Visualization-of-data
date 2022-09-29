@@ -119,5 +119,80 @@
 
 
 
-//---------------------------饼图：全学科薪资走势
+//---------------------------饼图：班级平均薪资
+function classSalaryChart() {
+    
+    //id="salary"
+    let myChart = echarts.init(document.querySelector('#salary'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
+    let option = {
+        title:{
+            text:'班级薪资分布',//文本标题
+            // 颜色，文字大小位置
+            textStyle: {
+                // color:'',
+                fontSize: 16 ,
+            },
+            left: 10 ,
+            top: 15 ,
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          bottom: '6%',
+          left: 'center'
+        },
+        series: [
+          {
+            color:  ['#FDA224', '#5097FF', '#3ABCFA', '#34D39A'],
+            name: '班级薪资分布',//
+            type: 'pie',//表示饼图
+            center:['50%','50%'],//中心点坐标
+            radius: ['50%', '64%'],
+            // avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,//圆角
+              borderColor: '#fff',//边框颜色
+              borderWidth: 2//边框大小
+            },
+            label: {
+              show: false,//每个扇形的描述文字不显示
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+                // 视觉引导线
+              show: false
+            },
+            data: [
+              { value: 1048, name: '一万以下' },
+              { value: 735, name: '1-1.5万' },
+              { value: 580, name: '1.5-2万' },
+              { value: 484, name: '2万以上' },
+            ]
+          }
+        ]
+      };
+    myChart.setOption(option)
+}
+
+classSalaryChart();
+
+
+
+
+
+
+
+
+
+
+
+
 //---------------------------饼图：全学科薪资走势

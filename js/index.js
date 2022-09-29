@@ -196,3 +196,30 @@ classSalaryChart();
 
 
 //---------------------------饼图：全学科薪资走势
+//---------------------------地图：
+
+function mapChart() {
+    let myChart = echarts.init(document.querySelector('#map'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
+
+    let option = {
+        title:{
+            text:'地图',//文本标题
+            // 颜色，文字大小位置
+            textStyle: {
+                // color:'',
+                fontSize: 16 ,
+            },
+            left: 10 ,
+            top: 15 ,
+        },
+        series:[{
+            type:'map',
+            map:'china',
+            itemStyle:{
+                areaColor:'blue'
+            }
+        }]
+    }
+    myChart.setOption(option)
+}
+mapChart();

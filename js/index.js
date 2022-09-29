@@ -159,20 +159,20 @@ function classSalaryChart() {
               show: false,//每个扇形的描述文字不显示
               position: 'center'
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: '40',
-                fontWeight: 'bold'
-              }
-            },
+            // emphasis: {
+            //   label: {
+            //     show: true,
+            //     fontSize: '40',
+            //     fontWeight: 'bold'
+            //   }
+            // },
             labelLine: {
                 // 视觉引导线
               show: false
             },
             data: [
               { value: 1048, name: '一万以下' },
-              { value: 735, name: '1-1.5万' },
+              { value: 235, name: '1-1.5万' },
               { value: 580, name: '1.5-2万' },
               { value: 484, name: '2万以上' },
             ]

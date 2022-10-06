@@ -8,9 +8,25 @@
 //   console.log(result);
 // })
 
+
+
+
 // ------------------------ 发送请求，获取首页需要的统计数据 -------------------
 axios.get('/dashboard').then(({ data: res }) => {
-  console.log(res)
+
+  let {overview,year,provinceData,salaryData,groupData} = res.data
+
+  //设置最上面的概览区的数据
+  console.log(overview)
+
+  for (const key in overview) {
+  document.querySelector(`[name=${key}]`).innerHTML = overview[key];
+
+  }
+  // document.querySelector('[name=salary]').innerHTML = overview.salary;
+  // document.querySelector('[name=student_count]').innerHTML = overview.student_count;
+  // document.querySelector('[name=age]').innerHTML = overview.age;
+  // document.querySelector('[name=group_count]').innerHTML = overview.group_count;
 })
 
 

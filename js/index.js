@@ -8,7 +8,10 @@
 //   console.log(result);
 // })
 
-
+// ------------------------ 发送请求，获取首页需要的统计数据 -------------------
+axios.get('/dashboard').then(({ data: res }) => {
+  console.log(res)
+})
 
 
 

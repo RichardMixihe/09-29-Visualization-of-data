@@ -23,10 +23,13 @@ axios.get('/dashboard').then(({ data: res }) => {
   document.querySelector(`[name=${key}]`).innerHTML = overview[key];
 
   }
-  // document.querySelector('[name=salary]').innerHTML = overview.salary;
-  // document.querySelector('[name=student_count]').innerHTML = overview.student_count;
-  // document.querySelector('[name=age]').innerHTML = overview.age;
-  // document.querySelector('[name=group_count]').innerHTML = overview.group_count;
+  // 调用函数
+  lineChart(year);                //折线图
+  classSalaryChart(salaryData);   //饼图
+  histogram(groupData);           //柱状图
+  salary(salaryData)              //折线图
+  mapChart(provinceData);         //地图
+
 })
 
 
@@ -35,7 +38,7 @@ axios.get('/dashboard').then(({ data: res }) => {
 //---------------------------折线图：全学科薪资走势
     // 1.得有盒子（页面布局中已经有了id='line'）
     // 2.引入echarts.min.js
-    function lineChart() {
+    function lineChart(data) {
          // 3.初始化echarts
     let myChart = echarts.init(document.querySelector('#line'))
     // 4.配置项
@@ -142,19 +145,8 @@ axios.get('/dashboard').then(({ data: res }) => {
     myChart.setOption(option)
 
     }
-
-    lineChart();
-
-
-
-
-
-
-
-
-
 //---------------------------饼图：班级平均薪资
-function classSalaryChart() {
+function classSalaryChart(data) {
     
     //id="salary"
     let myChart = echarts.init(document.querySelector('#salary'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
@@ -215,13 +207,8 @@ function classSalaryChart() {
       };
     myChart.setOption(option)
 }
-
-classSalaryChart();
-
-
-
 //---------------------------柱状图：班级每组薪资
-function histogram() {
+function histogram(data) {
   let myChart = echarts.init(document.querySelector('#lines'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
 
   option = {
@@ -310,17 +297,8 @@ function histogram() {
   };
   myChart.setOption(option)
 }
-histogram();
-
-
-
-
-
-
-
-
 //---------------------------饼图：全学科薪资走势
-function salary() {
+function salary(data) {
   let myChart = echarts.init(document.querySelector('#gender'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
   let option ={
 
@@ -419,32 +397,108 @@ function salary() {
   }
   myChart.setOption(option)
 }
-salary()
 //---------------------------地图：
-
-function mapChart() {
-    let myChart = echarts.init(document.querySelector('#map'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
-
-    let option = {
-        title:{
-            text:'地图',//文本标题
-            // 颜色，文字大小位置
-            textStyle: {
-                // color:'',
-                fontSize: 16 ,
-            },
-            left: 10 ,
-            top: 15 ,
+// --------------------------- 地图：籍贯分布 --------------------------------
+const mapChart = (data) => {
+  const mapData = [
+    { name: '南海诸岛', value: 0 },
+    { name: '北京', value: 3 },
+    { name: '天津', value: 2 },
+    { name: '上海', value: 4 },
+    { name: '重庆', value: 1 },
+    { name: '河北', value: 20 },
+    { name: '河南', value: 23 },
+    { name: '云南', value: 0 },
+    { name: '辽宁', value: 15 },
+    { name: '黑龙江', value: 12 },
+    { name: '湖南', value: 2 },
+    { name: '安徽', value: 5 },
+    { name: '山东', value: 18 },
+    { name: '新疆', value: 0 },
+    { name: '江苏', value: 5 },
+    { name: '浙江', value: 1 },
+    { name: '江西', value: 4 },
+    { name: '湖北', value: 3 },
+    { name: '广西', value: 2 },
+    { name: '甘肃', value: 9 },
+    { name: '山西', value: 11 },
+    { name: '内蒙古', value: 14 },
+    { name: '陕西', value: 14 },
+    { name: '吉林', value: 10 },
+    { name: '福建', value: 0 },
+    { name: '贵州', value: 0 },
+    { name: '广东', value: 0 },
+    { name: '青海', value: 3 },
+    { name: '西藏', value: 0 },
+    { name: '四川', value: 1 },
+    { name: '宁夏', value: 1 },
+    { name: '海南', value: 0 },
+    { name: '台湾', value: 0 },
+    { name: '香港', value: 0 },
+    { name: '澳门', value: 0 }
+  ]
+  let myChart = echarts.init(document.querySelector('#map'))
+  let option = {
+    // 视觉映射组件
+    visualMap: {
+      type: 'continuous', // continuous表示连续型； piecewise表示分段式
+      min: 0,
+      max: 20, // 看每个地区的学员多少，再来决定
+      inRange: {
+        color: ['#fff', '#0075F0']
+      },
+      text: [20, 0], // 两端的文字
+      left: 40,
+      bottom: 20
+    },
+    // 标题配置
+    title: {
+      text: '籍贯分布',
+      top: 15,
+      left: 10,
+      textStyle: {
+        fontSize: 16
+      }
+    },
+    // 肯定需要配置的有：series
+    series: [
+      {
+        name: '籍贯分布', // 添加系列数据的名字（和鼠标移入的提示有关系）
+        type: 'map',
+        map: 'china', // 具体是什么地图
+        // 显示文本标签（每个区域、每个省的名字）
+        label: {
+          show: true,
+          color: 'rgba(0, 0, 0, 0.7)',
+          fontSize: 10
         },
-        series:[{
-            type:'map',
-            map:'china',
-            itemStyle:{
-                areaColor:'#E0FFFF',
-                
-            }
-        }]
+        // 每个区域（省）【默认】的样式
+        itemStyle: {
+          areaColor: '#E0FFFF',
+          borderColor: 'rgba(0, 0, 0, 0.2)'
+        },
+        // 高亮状态，每个区域的配置
+        emphasis: {
+          // 高亮状态下（鼠标移入状态，或者选中状态下）
+          itemStyle: {
+            areaColor: '#34D39A',
+            shadowBlur: 20,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+        // 每个区域的数据
+        data: mapData
+      }
+    ],
+    // 鼠标移入的提示
+    tooltip: {
+      formatter: '{b}：{c}位学员', // {a}是series里面大的name；{b}表示每个区域的名字(省的名字)；{c}表示该地区的值
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      borderColor: 'transparent',
+      textStyle: {
+        color: '#fff'
+      }
     }
-    myChart.setOption(option)
+  }
+  myChart.setOption(option)
 }
-mapChart();

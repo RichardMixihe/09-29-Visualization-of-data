@@ -15,7 +15,7 @@ axios.defaults.baseURL = 'http://ajax-api.itheima.net'
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 // 2.配置请求拦截器（目的是加请求头）
 // 3.配置相应拦截器（判断token是否过期）
- // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+// axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 // 另外，使用请求拦截器也可以，代码如下
 // 3. 配置响应拦截器（判断token是否过期）

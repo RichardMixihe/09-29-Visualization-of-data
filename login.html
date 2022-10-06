@@ -91,8 +91,47 @@
   <script src="./bootstrap/bootstrap.min.js"></script>
   <script src="./lib/form-value.js"></script>
   <script src="./lib/axios.js"></script>
+  <script src="./lib/message.js"></script>
   <script src="./js/common.js"></script>
 
+  <script>
+    // 找到按钮注册单击事件
+    document.querySelector('#btn-login'). addEventListener('click',async function (e) {
+      e.preventDefault();
+      // val()快速手机表单数据
+      let data = val(document.querySelector('form'));
+
+      // 判断数据的长度，是否符合接口的要求
+
+    if (data.username.length <2 ||data.username.length>30) {
+      return message.error('用户名长度必须是2到30 ')
+    }
+    if (data.password.length<6 ||data.password.length>30) {
+      return message.error('密码长度必须是6到30 ')
+      
+    }
+      // Ajax提交
+      try {
+      // 成功：提示/清空输入框，跳转到index.html
+        const {data:res} = await axios.post('/login',data);
+        //存储token ，
+        localStorage.setItem('token',res.data.token)
+        message.success(res.message);
+        setTimeout(() => {
+          // location.herf = './index.html';
+          location.href = './index.html'
+
+        },);
+      } catch (e) {
+      // 失败：提示
+        // message.error(e.response.data.message)
+        console.log(e);
+      //  message.error(e.res.message)
+
+      }
+    })//绑定事件
+      
+  </script>
 </body>
 
 </html>

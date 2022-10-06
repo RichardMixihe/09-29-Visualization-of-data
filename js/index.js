@@ -1,3 +1,18 @@
+
+// axios({
+//   url:'/dashboard',
+//   headers:{
+//     Authorization:localStorage.getItem('token')
+//   }
+// }).then((result)=>{
+//   console.log(result);
+// })
+
+
+
+
+
+
 //---------------------------折线图：全学科薪资走势
     // 1.得有盒子（页面布局中已经有了id='line'）
     // 2.引入echarts.min.js

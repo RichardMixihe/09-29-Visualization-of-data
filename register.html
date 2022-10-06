@@ -89,10 +89,38 @@
     </div>
   </div>
   <script src="./bootstrap/bootstrap.min.js"></script>
+  <!-- 下面的form-value提供val（）函数用于快速收集表单数据 -->
   <script src="./lib/form-value.js"></script>
   <script src="./lib/axios.js"></script>
-  <script src="./js/common.js"></script>
+  <!-- 提示消息的插件 -->
+  <script src="./lib/message.js"></script>
 
+  <!-- 下面的common.js里面有axios配置 -->
+  <script src="./js/common.js"></script>
+<script>
+  //点击按钮阻止默认行为，使用val（）获取表单数据，ajax提交
+  document.querySelector('#btn-login'). addEventListener('click',async function (e) {
+    e.preventDefault();
+    let data = val(document.querySelector('form'));
+    if (data.username.length <2 ||data.username.length>30) {
+      return message.error('用户名长度必须是2到30 ')
+    }
+    if (data.password.length<6 ||data.password.length>30) {
+      return message.error('密码长度必须是6到30 ')
+      
+    }
+    try {
+      const {data:res} = await axios.post('/register',data);
+      message.success(res.message)
+      setTimeout(() => {
+          location.href = './login.html'
+        },100 );
+    } catch (e) {
+       message.error(e.response.data.message)
+    }
+  })//绑定事件
+
+</script>
 </body>
 
 </html>

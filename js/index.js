@@ -17,7 +17,7 @@ axios.get('/dashboard').then(({ data: res }) => {
   let {overview,year,provinceData,salaryData,groupData} = res.data
 
   //设置最上面的概览区的数据
-  console.log(overview)
+  // console.log(overview)
 
   for (const key in overview) {
   document.querySelector(`[name=${key}]`).innerHTML = overview[key];
@@ -29,7 +29,6 @@ axios.get('/dashboard').then(({ data: res }) => {
   histogram(groupData);           //柱状图
   salary(salaryData)              //折线图
   mapChart(provinceData);         //地图
-
 })
 
 
@@ -57,6 +56,7 @@ axios.get('/dashboard').then(({ data: res }) => {
         xAxis: {
           type: 'category',
           data:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          // data : data.map(item=>item.month),
             //   x轴上的文字 
             axisLabel:{
                 color:'#999'
@@ -103,7 +103,8 @@ axios.get('/dashboard').then(({ data: res }) => {
         series: [
           {
             
-            data: [9000, 12000, 15000, 13000, 10000, 18000, 14000, 10000, 12000, 13000, 15000, 19000],
+            // data: [9000, 12000, 15000, 13000, 10000, 18000, 14000, 10000, 12000, 13000, 15000, 19000],
+            data: data.map(item=>item.salary),
             type: 'line',
             //  平滑曲线
             smooth: true,
@@ -147,6 +148,7 @@ axios.get('/dashboard').then(({ data: res }) => {
     }
 //---------------------------饼图：班级平均薪资
 function classSalaryChart(data) {
+console.log(data);
     
     //id="salary"
     let myChart = echarts.init(document.querySelector('#salary'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
@@ -196,12 +198,15 @@ function classSalaryChart(data) {
                 // 视觉引导线
               show: false
             },
-            data: [
-              { value: 1048, name: '一万以下' },
-              { value: 235, name: '1-1.5万' },
-              { value: 580, name: '1.5-2万' },
-              { value: 484, name: '2万以上' },
-            ]
+            // data: [
+            //   { value: 1048, name: '一万以下' },
+            //   { value: 235, name: '1-1.5万' },
+            //   { value: 580, name: '1.5-2万' },
+            //   { value: 484, name: '2万以上' },
+            // ],
+            data:data.map(item=>{
+              return {value:item.g_count + item.b_count,name:item.label}
+            })
           }
         ]
       };
@@ -222,7 +227,9 @@ function histogram(data) {
     xAxis: {
       color:'#ccc',
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      // data : data.map(item=>item.name),
+      
       axisLine:{
         lineStyle:{
            type:'dashed',
@@ -358,12 +365,9 @@ function salary(data) {
           // labelLine: {
           //   show: false
           // },
-          data: [
-            { value: 1048, name: '1万以下' },
-            { value: 235, name: '1万-2万' },
-            { value: 580, name: '1.5万-2万' },
-            { value: 484, name: '2万以上' }
-          ],
+          data:data.map(item=>{
+            return {value:item.b_count,name:item.label}
+          })
         },
         {
           name: '女生工资分布',
@@ -385,12 +389,15 @@ function salary(data) {
           // labelLine: {
           //   show: true
           // },
-          data: [
-            { value: 1048, name: '1万以下' },
-          { value: 235, name: '1万-2万' },
-          { value: 580, name: '1.5万-2万' },
-          { value: 484, name: '2万以上' }
-          ],
+          // data: [
+          //   { value: 1048, name: '1万以下' },
+          // { value: 235, name: '1万-2万' },
+          // { value: 580, name: '1.5万-2万' },
+          // { value: 484, name: '2万以上' }
+          // ],
+          data:data.map(item=>{
+            return {value:item.g_count,name:item.label}
+          })
         }
       ]
 

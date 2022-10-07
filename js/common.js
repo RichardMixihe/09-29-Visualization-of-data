@@ -34,3 +34,25 @@ axios.interceptors.response.use(function (response) {
   // 对响应错误做点什么
   return Promise.reject(error);
 });
+
+// // 处理用户名和退出
+// // 自己给用户名那个span加个 id="username"
+
+// if (document.querySelector('#username') && document.querySelector('#logout')) {
+//   document.querySelector('#username').innerHTML = localStorage.getItem('username')
+
+//   document.querySelector('#logout').addEventListener('click', function () {
+//     // 使用插件提供的 message.confirm('提示标题', '消息', res => {})
+//     message.confirm('提示', '你确定要退出吗？', res => {
+//       // 点击确定，res=true； 点击取消，res=false
+//       if (res) {
+//         // 移除本地存储的username和token
+//         localStorage.removeItem('username')
+//         localStorage.removeItem('token')
+//         // 跳转到登录页  // js文件中的路径，不能以js文件在哪里为准，和js文件在哪里无关
+//         // 和 使用js的html文件有关系
+//         location.href = './login.html'
+//       }
+//     })
+//   })
+// }

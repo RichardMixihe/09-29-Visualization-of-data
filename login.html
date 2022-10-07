@@ -96,6 +96,7 @@
 
   <script>
     // 找到按钮注册单击事件
+
     document.querySelector('#btn-login'). addEventListener('click',async function (e) {
       e.preventDefault();
       // val()快速手机表单数据
@@ -117,11 +118,13 @@
         //存储token ，
         localStorage.setItem('token',res.data.token)
         message.success(res.message);
+        localStorage.setItem('username',res.data.username)
         setTimeout(() => {
           // location.herf = './index.html';
           location.href = './index.html'
 
         },);
+
       } catch (e) {
       // 失败：提示
         // message.error(e.response.data.message)

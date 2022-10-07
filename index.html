@@ -105,13 +105,13 @@
                         src="https://yanxuan-item.nosdn.127.net/8b27deb1670c53e67c42ca3e1ed6fd12.jpg" />
                     </span>
                     <div class="ml-2 d-none d-lg-block">
-                      <span class="mb-0 text-sm font-weight-bold">Admin</span>
+                      <span id="username" class="mb-0 text-sm font-weight-bold">Admin</span>
                     </div>
                   </div>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link pl-lg-0" id="logout" href="javascript:;"> 退出 </a>
+              <li class="nav-item" id="logout">
+                <a id="username" class="nav-link pl-lg-0"  href="javascript:;"> 退出 </a>
               </li>
             </ul>
           </div>
@@ -256,6 +256,21 @@
   <script src="./js/common.js"></script>
   <script src="./lib/china.js"></script>
   <script src="./js/index.js"></script>
+  <script>
+    //显示用户名
+    document.querySelector('#username').innerHTML = localStorage.getItem('username')
+    // 退出登录
+    // 点击退出，询问是否要退出，如果是
+    document.querySelector('#logout'). addEventListener('click',function () {
+      if(confirm('你确定要退出吗')){
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        location.href = './login.html';
+        console.log('退出成功');
+        // document.reload();
+      }
+    })//绑定事件
+  </script>
 </body>
 
 </html>

@@ -148,7 +148,7 @@ axios.get('/dashboard').then(({ data: res }) => {
     }
 //---------------------------饼图：班级平均薪资
 function classSalaryChart(data) {
-console.log(data);
+// console.log(data);
     
     //id="salary"
     let myChart = echarts.init(document.querySelector('#salary'));//返回文档中匹配指定 CSS选择器的一个元素。!!注意仅仅返回匹配指定选择器的第一个元素)
@@ -228,6 +228,7 @@ function histogram(data) {
       color:'#ccc',
       type: 'category',
       // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      data:data[1].map(item=>item.name),
       // data : data.map(item=>item.name),
       
       axisLine:{
@@ -244,7 +245,8 @@ function histogram(data) {
       type: 'value',
       splitLine:{
         lineStyle:{
-          type:'dashed'
+          type:'dashed',
+          // data:data[1].map(item=>item.)
         }
       }
     },
@@ -287,21 +289,44 @@ function histogram(data) {
         }
       ],
     series: [
-      
       {
-        data: [12200, 17932, 13901, 13934, 21290, 23300, 13300, 13320],
-        type: 'bar',
-        name: '期望薪资'
+        data:data[1].map(item =>item.hope_salary),
+        type:'bar',
+        name:'期望薪资'
       },
       
+      // {
+      //   data: [12200, 17932, 13901, 13934, 21290, 23300, 13300, 13320], 
+      //   type: 'bar',
+      //   name: '期望薪资'
+      // },
+      
       {
-        data: [22820, 19932, 16901, 15934, 31290, 13300, 14300, 18320],
+        data: data[1].map(item=>item.salary),
         type: 'bar',
         name: '就业薪资'
       }
     ],
     tooltip: {},
   };
+
+  // 找到8个按钮外的盒子，注册事件
+  document.querySelector('#btns'). addEventListener('click',function (e) {
+    if (e.target.tagName = 'BUTTON') {
+      //说明点击了某个按钮
+      let i = e.target.innerHTML;
+
+      console.log(i);
+      document.querySelector('#btns .btn-blue'). classList.remove('btn-blue');
+      e.target.classList.add('btn-blue');
+      // 更换图表中的数据（点击的是第几组，图表中应该展示该组数据
+      option.xAxis.data= data[i].map(item=>item.name)
+      option.series[0].data= data[i].map(item=>item.hope_salary)
+      option.series[1].data= data[i].map(item=>item.salary)
+    myChart.setOption(option)
+
+    }
+  })//绑定事件
   myChart.setOption(option)
 }
 //---------------------------饼图：全学科薪资走势
@@ -407,54 +432,64 @@ function salary(data) {
 //---------------------------地图：
 // --------------------------- 地图：籍贯分布 --------------------------------
 const mapChart = (data) => {
+  console.log(data);
   const mapData = [
     { name: '南海诸岛', value: 0 },
-    { name: '北京', value: 3 },
-    { name: '天津', value: 2 },
-    { name: '上海', value: 4 },
-    { name: '重庆', value: 1 },
-    { name: '河北', value: 20 },
-    { name: '河南', value: 23 },
+    { name: '北京', value: 0 },
+    { name: '天津', value: 0 },
+    { name: '上海', value: 0 },
+    { name: '重庆', value: 0 },
+    { name: '河北', value: 0 },
+    { name: '河南', value: 0 },
     { name: '云南', value: 0 },
-    { name: '辽宁', value: 15 },
-    { name: '黑龙江', value: 12 },
-    { name: '湖南', value: 2 },
-    { name: '安徽', value: 5 },
-    { name: '山东', value: 18 },
+    { name: '辽宁', value: 0 },
+    { name: '黑龙江', value: 0 },
+    { name: '湖南', value: 0 },
+    { name: '安徽', value: 0 },
+    { name: '山东', value: 0 },
     { name: '新疆', value: 0 },
-    { name: '江苏', value: 5 },
-    { name: '浙江', value: 1 },
-    { name: '江西', value: 4 },
-    { name: '湖北', value: 3 },
-    { name: '广西', value: 2 },
-    { name: '甘肃', value: 9 },
-    { name: '山西', value: 11 },
-    { name: '内蒙古', value: 14 },
-    { name: '陕西', value: 14 },
-    { name: '吉林', value: 10 },
+    { name: '江苏', value: 0 },
+    { name: '浙江', value: 0 },
+    { name: '江西', value: 0 },
+    { name: '湖北', value: 0 },
+    { name: '广西', value: 0 },
+    { name: '甘肃', value: 0 },
+    { name: '山西', value: 0 },
+    { name: '内蒙古', value: 0 },
+    { name: '陕西', value: 0 },
+    { name: '吉林', value: 0 },
     { name: '福建', value: 0 },
     { name: '贵州', value: 0 },
     { name: '广东', value: 0 },
-    { name: '青海', value: 3 },
+    { name: '青海', value: 0 },
     { name: '西藏', value: 0 },
-    { name: '四川', value: 1 },
-    { name: '宁夏', value: 1 },
+    { name: '四川', value: 0 },
+    { name: '宁夏', value: 0 },
     { name: '海南', value: 0 },
     { name: '台湾', value: 0 },
     { name: '香港', value: 0 },
     { name: '澳门', value: 0 }
   ]
+  mapData.forEach(item=>{
+    let res = data.find(v=>{
+      return v.name.includes(item.name);
+    })
+    if(res){
+      item.value = res.value
+    }
+  })
+
   let myChart = echarts.init(document.querySelector('#map'))
   let option = {
     // 视觉映射组件
     visualMap: {
       type: 'continuous', // continuous表示连续型； piecewise表示分段式
       min: 0,
-      max: 20, // 看每个地区的学员多少，再来决定
+      max: 6, // 看每个地区的学员多少，再来决定
       inRange: {
         color: ['#fff', '#0075F0']
       },
-      text: [20, 0], // 两端的文字
+      text: [6, 0], // 两端的文字
       left: 40,
       bottom: 20
     },
